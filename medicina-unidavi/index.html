@@ -30,7 +30,7 @@
     </a>
 
     <div class="busca">
-      <input type="text" placeholder="Buscar no catálogo: moletom, camiseta, kit…" aria-label="Buscar">
+      <input type="text" placeholder="Buscar no catálogo: moletom, calça, caneca…" aria-label="Buscar">
       <button aria-label="Buscar">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
       </button>
@@ -53,10 +53,10 @@
     <a href="#" class="destaque">Unidavi</a>
     <a href="#" class="on">Medicina</a>
     <a href="#">Moletons</a>
-    <a href="#">Camisetas</a>
-    <a href="#">Jalecos</a>
-    <a href="#">Acessórios</a>
+    <a href="#">Calças</a>
+    <a href="#">Meias</a>
     <a href="#">Canecas</a>
+    <a href="#">Pins</a>
     <a href="#">Kit Completo</a>
     <a href="#">Personalização</a>
   </div>
@@ -93,8 +93,8 @@
       <div class="grupo">
         <h3>Categoria</h3>
         <div class="opcao on" data-toggle><i></i>Moletons</div>
-        <div class="opcao" data-toggle><i></i>Camisetas</div>
-        <div class="opcao" data-toggle><i></i>Jalecos</div>
+        <div class="opcao on" data-toggle><i></i>Calças</div>
+        <div class="opcao" data-toggle><i></i>Meias</div>
         <div class="opcao" data-toggle><i></i>Acessórios</div>
       </div>
 
@@ -168,7 +168,7 @@
       </div>
       <div>
         <h4>Catálogo</h4>
-        <ul><li>Medicina Unidavi</li><li>Moletons</li><li>Camisetas</li><li>Acessórios</li></ul>
+        <ul><li>Medicina Unidavi</li><li>Moletons</li><li>Calças</li><li>Acessórios</li></ul>
       </div>
       <div>
         <h4>A Formô</h4>
@@ -217,7 +217,7 @@ const PRODUTOS = [
     selo: 'Novo',
     seloCor: '',                      // '' coral · 'azul' · 'creme'
     resumo: 'Capuz forrado, recortes college e bordado 18 nas costas.',
-    fotos: ['assets/produtos/FOTO MOLETOM CANGURU.png'],
+    fotos: ['assets/produtos/moletom-canguru.png'],
     fundo: 'linear-gradient(160deg,#4a4b4f 0%,#26272a 60%,#1c1d20 100%)',
     cores: ['#EFE6D3', '#1E2A50', '#A81E32'],
     tamanhos: ['PP','P','M','G','GG','XG'],
@@ -235,7 +235,7 @@ const PRODUTOS = [
     selo: 'Destaque',
     seloCor: 'azul',
     resumo: 'Gola careca oversized com monograma MU e serpentes nas mangas.',
-    fotos: ['assets/produtos/FOTO MOLETOM CARECA 2.jpg','assets/produtos/FOTO MOLETOM CARECA 1.jpg'],
+    fotos: ['assets/produtos/moletom-careca-2.jpg','assets/produtos/moletom-careca-1.jpg'],
     fundo: 'linear-gradient(160deg,#EBD3B2 0%,#DFC098 55%,#D3B187 100%)',
     cores: ['#D8C3A2', '#1A1420'],
     tamanhos: ['PP','P','M','G','GG','XG'],
@@ -247,11 +247,123 @@ const PRODUTOS = [
       'Cor areia com estampa em azul-noite',
       'Marcação da turma: 2026 — 2031'
     ]
+  },
+  {
+    nome: 'Calça Reta MedUnidavi 18',
+    selo: 'Novo',
+    seloCor: '',
+    resumo: 'Moletom de perna reta com lettering lateral, em creme e marinho.',
+    fotos: ['assets/produtos/calca-reta-2.jpg','assets/produtos/calca-reta-1.jpg'],
+    fundo: 'linear-gradient(180deg,#4A4B48 0%,#8E8A83 55%,#BDB6AE 100%)',
+    cores: ['#EFE6D3', '#1E2A50'],
+    tamanhos: ['PP','P','M','G','GG','XG'],
+    preco: '',
+    detalhes: [
+      'Moletom flanelado com caimento reto e amplo',
+      'Lettering "MEDUNIDAVI18" na lateral da perna',
+      'Cordão de ajuste no cós e bolsos embutidos',
+      'Duas cores: creme e azul-marinho',
+      'Modelagem unissex'
+    ]
+  },
+  {
+    nome: 'Calça Jogger MedUnidavi 18',
+    selo: '',
+    seloCor: '',
+    resumo: 'A mesma lateral bordada, com punho elástico no tornozelo.',
+    fotos: ['assets/produtos/calca-jogger.jpg'],
+    fundo: 'linear-gradient(180deg,#484947 0%,#8B857F 55%,#BAB2AD 100%)',
+    cores: ['#EFE6D3', '#1E2A50'],
+    tamanhos: ['PP','P','M','G','GG','XG'],
+    preco: '',
+    detalhes: [
+      'Versão jogger, com punho de ribana no tornozelo',
+      'Lettering "MEDUNIDAVI18" na lateral da perna',
+      'Cordão de ajuste no cós e bolsos embutidos',
+      'Duas cores: creme e azul-marinho',
+      'Modelagem unissex'
+    ]
+  },
+  {
+    nome: 'Calça Flare MedUnidavi 18',
+    selo: 'Novo',
+    seloCor: '',
+    resumo: 'Cintura alta e barra flare, com o monograma MU no quadril.',
+    fotos: ['assets/produtos/calca-flare.jpg'],
+    fundo: 'linear-gradient(180deg,#86837D 0%,#A6A29B 55%,#C2BCB3 100%)',
+    cores: ['#EFE6D3', '#1E2A50'],
+    tamanhos: ['PP','P','M','G','GG','XG'],
+    preco: '',
+    detalhes: [
+      'Moletom de cintura alta com barra flare',
+      'Monograma MU bordado no quadril',
+      'Cós largo, sem cordão',
+      'Duas cores: creme e azul-marinho',
+      'Modelagem feminina'
+    ]
+  },
+  {
+    nome: 'Meias Medicina Unidavi',
+    selo: '',
+    seloCor: '',
+    resumo: 'Meia cano médio canelada com o monograma MU bordado.',
+    fotos: ['assets/produtos/meias.jpg'],
+    fundo: 'linear-gradient(180deg,#E4E0DC 0%,#E6E5E2 55%,#E3E2E0 100%)',
+    cores: ['#EFE6D3', '#1E2A50'],
+    tamanhos: ['Único'],
+    preco: '',
+    detalhes: [
+      'Meia cano médio em algodão canelado',
+      'Monograma MU bordado na lateral',
+      'Duas cores: creme e azul-marinho',
+      'Tamanho único (35 ao 43)'
+    ]
+  },
+  {
+    nome: 'Caneca + Tirante Medicina Unidavi',
+    selo: 'Kit Adesão',
+    seloCor: 'creme',
+    resumo: 'Caneca esmaltada marinho com o brasão, acompanhada do tirante.',
+    fotos: ['assets/produtos/caneca-tirante.jpg'],
+    fundo: 'linear-gradient(180deg,#6F7273 0%,#A5A8A9 55%,#CCCFD0 100%)',
+    cores: ['#1E2A50'],
+    tamanhos: ['Único'],
+    preco: '',
+    detalhes: [
+      'Caneca esmaltada azul-marinho com alça',
+      'Brasão MU de um lado, marca Formô do outro',
+      'Tirante em fita com o brasão repetido',
+      'Marcação da turma: 2026 — 2031'
+    ]
+  },
+  {
+    nome: 'Pin Brasão Medicina Unidavi',
+    selo: 'Exclusivo',
+    seloCor: 'azul',
+    resumo: 'Pin metálico em relevo com o brasão da turma e os anos.',
+    fotos: ['assets/produtos/pin.jpg'],
+    fundo: 'linear-gradient(180deg,#0F1316 0%,#272D32 55%,#40474D 100%)',
+    cores: ['#1E2A50'],
+    tamanhos: ['Único'],
+    preco: '',
+    detalhes: [
+      'Pin metálico com acabamento em azul-marinho',
+      'Brasão MU em alto-relevo com a serpente de Asclépio',
+      'Faixas laterais com 2026 e 2031',
+      'Fecho borboleta na parte de trás'
+    ]
   }
 ];
 
 /* quantos cards de "em breve" mostrar no fim da grade */
-const EM_BREVE = 4;
+const EM_BREVE = 2;
+
+/* mostra "Tamanho único" quando a peça tem um tamanho só */
+function faixaTam(p){
+  return p.tamanhos.length === 1
+    ? `Tamanho ${p.tamanhos[0].toLowerCase()}`
+    : `${p.tamanhos[0]} ao ${p.tamanhos[p.tamanhos.length-1]}`;
+}
 
 /* ---------- montagem da grade ---------- */
 const svgCoracao = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20s-7-4.4-7-9.3A4.2 4.2 0 0 1 12 7.6a4.2 4.2 0 0 1 7 3.1C19 15.6 12 20 12 20Z"/></svg>';
@@ -275,7 +387,7 @@ PRODUTOS.forEach((p, i) => {
       <p class="desc">${p.resumo}</p>
       <div class="pe">
         <span class="swatches">${p.cores.map(c => `<i style="background:${c}"></i>`).join('')}</span>
-        ${p.preco ? `<span class="preco">${p.preco}</span>` : `<span class="tams">${p.tamanhos[0]} ao ${p.tamanhos[p.tamanhos.length-1]}</span>`}
+        ${p.preco ? `<span class="preco">${p.preco}</span>` : `<span class="tams">${faixaTam(p)}</span>`}
       </div>
     </div>`;
 
