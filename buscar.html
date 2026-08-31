@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Formô Match · Sua turma</title>
+<meta name="description" content="Encontre a sua turma no Formô Match.">
+<link rel="stylesheet" href="assets/css/match.css">
+</head>
+<body>
+
+<div class="tela">
+
+  <section class="busca-tela">
+    <img class="traco esq" src="assets/img/squiggle-esq.png" alt="">
+    <img class="traco dir" src="assets/img/squiggle-dir.png" alt="">
+
+    <a class="voltar" href="index.html" id="voltar">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H6"/><path d="m12 5-7 7 7 7"/></svg>
+      Voltar
+    </a>
+
+    <div class="centro" id="centro">
+      <img class="logo-match" src="assets/img/logo-match.png" alt="Formô Match">
+
+      <div class="trilha" id="trilha"></div>
+
+      <!-- 1 · PAÍS -->
+      <div class="passo on" data-passo="pais">
+        <p class="pergunta">Onde fica a sua faculdade?</p>
+        <div class="opcoes">
+          <button class="btn-preto grande" data-txt="Brasil"   onclick="escolher('pais','Brasil')">Brasil</button>
+          <button class="btn-preto grande" data-txt="Paraguay" onclick="escolher('pais','Paraguay')">Paraguay</button>
+        </div>
+      </div>
+
+      <!-- 2 · ESTADO -->
+      <div class="passo" data-passo="estado">
+        <p class="pergunta">Em qual estado?</p>
+        <div class="mapa" id="mapa"></div>
+        <p class="legenda">A Formô atende hoje o Paraná e Santa Catarina.</p>
+      </div>
+
+      <!-- 2b · PARAGUAY -->
+      <div class="passo" data-passo="paraguay">
+        <p class="pergunta">Boa!</p>
+        <div class="aviso-vazio">
+          <b>Ainda não atendemos o Paraguay.</b>
+          Estamos chegando lá — por enquanto a Formô produz para turmas do Paraná e de Santa Catarina.
+        </div>
+        <div class="opcoes" style="margin-top:26px">
+          <button class="btn-preto" data-txt="Voltar para o Brasil" onclick="escolher('pais','Brasil')">Voltar para o Brasil</button>
+        </div>
+      </div>
+
+      <!-- 3 · CURSO -->
+      <div class="passo" data-passo="curso">
+        <p class="pergunta">Qual é o seu curso?</p>
+        <div class="opcoes" id="cursos"></div>
+      </div>
+
+      <!-- 4 · FACULDADE -->
+      <div class="passo" data-passo="faculdade">
+        <p class="pergunta">E qual é a sua faculdade?</p>
+        <div class="opcoes" id="faculdades"></div>
+      </div>
+
+      <!-- 5 · TURMA -->
+      <div class="passo" data-passo="turma">
+        <p class="pergunta">Por último: <b>Qual o número da sua turma?</b></p>
+        <form class="campo-turma" id="formTurma">
+          <div class="caixa">
+            <input id="turma" type="text" inputmode="numeric" autocomplete="off" placeholder="Ex.: 18" aria-label="Número da turma" maxlength="4">
+            <button class="ok" type="submit" aria-label="Confirmar">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13"/><path d="m12 5 7 7-7 7"/></svg>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- 6 · O QUE CRIAR -->
+      <div class="passo" data-passo="criar">
+        <p class="pergunta">O que vamos criar com a Formô hoje?</p>
+        <div class="cartoes" id="cartoes"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="barra-baixo">
+    <a class="marca" href="index.html" aria-label="Formô">
+      <img src="assets/img/logo-formo-coral.svg" alt="Formô">
+    </a>
+    <button class="bt-comecar" id="btComecar" disabled>Começar</button>
+  </footer>
+
+</div>
+
+<script>
+/* ============================================================
+   FORMÔ MATCH — seleção da turma
+   ------------------------------------------------------------
+   ESTADOS ATENDIDOS: é só acrescentar a sigla em ATENDIDOS.
+   CURSOS: é só editar a lista CURSOS.
+   ============================================================ */
+
+const ATENDIDOS = ['PR', 'SC'];
+
+const CURSOS = ['Medicina', 'Direito', 'Odontologia', 'Enfermagem', 'Arq e Urb', 'Engenharia'];
+
+/* FACULDADES: acrescente os nomes que faltam nesta lista */
+const FACULDADES = ['PUC', 'UP', 'Mackenzie', 'FPP', 'FAG', 'UNISUL-PB'];
+
+const CRIAR = [
+  { nome: 'Pré Eventos', video: '' },   // coloque aqui o caminho do vídeo, ex.: 'assets/video/pre-eventos.mp4'
+  { nome: 'Decor',       video: '' },
+  { nome: 'Kit Adesão',  video: '' },
+  { nome: 'Brasão',      video: '' }
+];
+
+/* mapa do Brasil em blocos — cada linha é uma faixa norte→sul */
+const MAPA = [
+  ['',   '',   'RR', 'AP', '',   ''  ],
+  ['',   'AM', 'PA', 'MA', 'CE', 'RN'],
+  ['AC', 'RO', 'TO', 'PI', 'PB', 'PE'],
+  ['',   'MT', 'GO', 'BA', 'AL', 'SE'],
+  ['',   'MS', 'DF', 'MG', 'ES', ''  ],
+  ['',   '',   'SP', 'RJ', '',   ''  ],
+  ['',   '',   'PR', '',   '',   ''  ],
+  ['',   '',   'SC', '',   '',   ''  ],
+  ['',   'RS', '',   '',   '',   ''  ]
+];
+
+/* onde o botão COMEÇAR leva — por enquanto só existe este catálogo */
+const DESTINO = 'medicina-unidavi/index.html';
+
+const escolha = { pais: '', estado: '', curso: '', faculdade: '', turma: '', criar: '' };
+const ORDEM = ['pais', 'estado', 'curso', 'faculdade', 'turma', 'criar'];
+let atual = 'pais';
+
+/* ---------- monta o mapa ---------- */
+document.getElementById('mapa').innerHTML = MAPA.flat().map(uf => {
+  if (!uf) return '<span class="uf" style="visibility:hidden"></span>';
+  const on = ATENDIDOS.includes(uf);
+  return `<button class="uf ${on ? 'ativo' : ''}" data-txt="${uf}" ${on ? `onclick="escolher('estado','${uf}')"` : 'disabled'}>${uf}</button>`;
+}).join('');
+
+/* ---------- monta os cursos ---------- */
+document.getElementById('cursos').innerHTML = CURSOS.map(c =>
+  `<button class="btn-preto" data-txt="${c}" onclick="escolher('curso','${c}')">${c}</button>`).join('');
+
+/* ---------- monta as faculdades ---------- */
+document.getElementById('faculdades').innerHTML = FACULDADES.map(f =>
+  `<button class="btn-preto" data-txt="${f}" onclick="escolher('faculdade','${f}')">${f}</button>`).join('');
+
+/* ---------- monta os cartões ---------- */
+document.getElementById('cartoes').innerHTML = CRIAR.map((c, i) => `
+  <button class="cartao" onclick="escolherCartao(${i})">
+    ${c.video ? `<video src="${c.video}" autoplay muted loop playsinline></video><span class="veu"></span>`
+              : `<span class="vazio">vídeo em breve</span>`}
+    <span data-txt="${c.nome}">${c.nome}</span>
+  </button>`).join('');
+
+/* ---------- navegação ---------- */
+function mostrar(passo){
+  atual = passo;
+  document.querySelectorAll('.passo').forEach(p =>
+    p.classList.toggle('on', p.dataset.passo === passo));
+  const centro = document.getElementById('centro');
+  centro.classList.toggle('largo', passo === 'criar');
+  centro.classList.toggle('compacto', passo !== 'pais');
+  pintarTrilha();
+}
+
+function escolher(campo, valor){
+  escolha[campo] = valor;
+  if (campo === 'pais'){
+    if (valor === 'Paraguay'){ escolha.estado = ''; return mostrar('paraguay'); }
+    return mostrar('estado');
+  }
+  if (campo === 'estado')    return mostrar('curso');
+  if (campo === 'curso')     return mostrar('faculdade');
+  if (campo === 'faculdade') { mostrar('turma'); setTimeout(() => document.getElementById('turma').focus(), 320); }
+}
+
+function escolherCartao(i){
+  escolha.criar = CRIAR[i].nome;
+  document.querySelectorAll('.cartao').forEach((c, k) => c.classList.toggle('escolhido', k === i));
+}
+
+/* trilha de escolhas — clicar volta para aquele passo */
+function pintarTrilha(){
+  const seta = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>';
+  const feitos = ORDEM.filter(k => escolha[k] && ORDEM.indexOf(k) < ORDEM.indexOf(atual));
+  document.getElementById('trilha').innerHTML = feitos.map(k =>
+    `<button onclick="voltarPara('${k}')">${escolha[k]}${seta}</button>`).join('');
+}
+
+function voltarPara(campo){
+  ORDEM.slice(ORDEM.indexOf(campo)).forEach(k => escolha[k] = '');
+  liberar();
+  mostrar(campo === 'estado' && escolha.pais === 'Paraguay' ? 'paraguay' : campo);
+}
+
+/* voltar do canto: um passo atrás, ou para a home no primeiro */
+document.getElementById('voltar').addEventListener('click', e => {
+  if (atual === 'pais') return;                 // segue o link para a home
+  e.preventDefault();
+  const anterior = { estado:'pais', paraguay:'pais', curso:'estado', faculdade:'curso', turma:'faculdade', criar:'turma' }[atual];
+  voltarPara(anterior);
+});
+
+/* ---------- turma ---------- */
+const bt = document.getElementById('btComecar');
+function liberar(){
+  const pronto = !!(escolha.estado && escolha.curso && escolha.faculdade && escolha.turma);
+  bt.disabled = !pronto;
+  bt.textContent = pronto ? 'Começar' : 'Começar';
+}
+document.getElementById('formTurma').addEventListener('submit', e => {
+  e.preventDefault();
+  const v = document.getElementById('turma').value.trim();
+  if (!v) return;
+  escolha.turma = 'Turma ' + v;
+  liberar();
+  mostrar('criar');
+});
+
+bt.addEventListener('click', () => { if (!bt.disabled) location.href = DESTINO; });
+
+liberar();
+</script>
+</body>
+</html>

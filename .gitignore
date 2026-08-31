@@ -1,0 +1,10 @@
+# lixo do macOS
+.DS_Store
+._*
+
+# pasta local onde ficam as fotos originais dos produtos
+# (as que o site usa ficam em medicina-unidavi/assets/produtos)
+UNIDAVI/
+
+# configuração local do Claude Code
+.claude/
