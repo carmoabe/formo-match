@@ -186,22 +186,66 @@
   </div>
 </footer>
 
-<!-- =========== MODAL =========== -->
-<div class="modal" id="modal">
-  <div class="modal-cx">
-    <button class="fechar" id="fechar" aria-label="Fechar">
+<!-- =========== VISOR EM TELA CHEIA =========== -->
+<div class="visor" id="visor">
+  <button class="fechar" id="fechar" aria-label="Fechar">
+    <svg width="18" height="18" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+  </button>
+
+  <div class="visor-fig" id="vFig">
+    <button class="visor-nav ant" id="vAnt" aria-label="Peça anterior">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m14 5-7 7 7 7"/></svg>
+    </button>
+    <button class="visor-nav prox" id="vProx" aria-label="Próxima peça">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m10 5 7 7-7 7"/></svg>
+    </button>
+    <span class="visor-conta" id="vConta"></span>
+  </div>
+
+  <div class="visor-txt">
+    <div class="marca">Medicina Unidavi · Dezoito</div>
+    <h3 id="vNome"></h3>
+    <p class="desc" id="vDesc"></p>
+    <h5>Detalhes da peça</h5>
+    <ul class="lista" id="vLista"></ul>
+    <h5>Tamanhos</h5>
+    <div class="chips" id="vTams"></div>
+  </div>
+</div>
+
+<!-- =========== BOTÃO E MODO SHOWCASE =========== -->
+<button class="bt-show" id="btShow">
+  <span class="disco">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>
+  </span>
+  Play Showcase
+</button>
+
+<div class="show" id="show">
+  <div class="tempo"><i id="sTempo"></i></div>
+  <div class="topo-show">
+    <img src="assets/img/logo-formo.svg" alt="Formô">
+    <span class="titulo">Medicina Unidavi · Kit Adesão 2026</span>
+  </div>
+  <div id="sSlides"></div>
+  <div class="legenda">
+    <div class="marca" id="sConta"></div>
+    <h4 id="sNome"></h4>
+    <p id="sDesc"></p>
+  </div>
+  <div class="controles">
+    <button id="sAnt" aria-label="Anterior">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m14 5-7 7 7 7"/></svg>
+    </button>
+    <button id="sPausa" aria-label="Pausar">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+    </button>
+    <button id="sProx" aria-label="Próximo">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m10 5 7 7-7 7"/></svg>
+    </button>
+    <button id="sFechar" aria-label="Sair do showcase">
       <svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
     </button>
-    <div class="modal-fig" id="mFig"></div>
-    <div class="modal-txt">
-      <div class="marca">Medicina Unidavi · Dezoito</div>
-      <h3 id="mNome"></h3>
-      <p class="desc" id="mDesc"></p>
-      <h5>Detalhes da peça</h5>
-      <ul class="lista" id="mLista"></ul>
-      <h5>Tamanhos</h5>
-      <div class="chips" id="mTams"></div>
-    </div>
   </div>
 </div>
 
@@ -408,30 +452,152 @@ for (let i = 0; i < EM_BREVE; i++) {
 }
 document.getElementById('qtd').textContent = PRODUTOS.length;
 
-/* ---------- modal ---------- */
-const modal = document.getElementById('modal');
+/* ---------- visor em tela cheia ---------- */
+const visor = document.getElementById('visor');
+let atual = 0, fotoAtual = 0;
+
 function abrir(i){
-  const p = PRODUTOS[i];
-  document.getElementById('mNome').textContent = p.nome;
-  document.getElementById('mDesc').textContent = p.resumo;
-  document.getElementById('mLista').innerHTML = p.detalhes.map(d => `<li>${d}</li>`).join('');
-  document.getElementById('mTams').innerHTML = p.tamanhos.map(t => `<span class="chip">${t}</span>`).join('');
-  const fig = document.getElementById('mFig');
-  fig.style.background = p.fundo;
-  fig.innerHTML = `<img id="mImg" src="${p.fotos[0]}" alt="${p.nome}">` +
-    (p.fotos.length > 1 ? `<div class="modal-mini">${p.fotos.map((f,k)=>`<button class="${k?'':'on'}"><img src="${f}" alt=""></button>`).join('')}</div>` : '');
-  fig.querySelectorAll('.modal-mini button').forEach((b,k) => b.addEventListener('click', () => {
-    document.getElementById('mImg').src = p.fotos[k];
-    fig.querySelectorAll('.modal-mini button').forEach(x => x.classList.remove('on'));
-    b.classList.add('on');
-  }));
-  modal.classList.add('on');
+  atual = i; fotoAtual = 0;
+  pintarVisor();
+  visor.classList.add('on');
   document.body.style.overflow = 'hidden';
 }
-function fechar(){ modal.classList.remove('on'); document.body.style.overflow = ''; }
+
+function pintarVisor(){
+  const p = PRODUTOS[atual];
+  document.getElementById('vNome').textContent = p.nome;
+  document.getElementById('vDesc').textContent = p.resumo;
+  document.getElementById('vLista').innerHTML = p.detalhes.map(d => `<li>${d}</li>`).join('');
+  document.getElementById('vTams').innerHTML = p.tamanhos.map(t => `<span class="chip">${t}</span>`).join('');
+  document.getElementById('vConta').textContent = `${atual + 1} / ${PRODUTOS.length}`;
+
+  const fig = document.getElementById('vFig');
+  fig.style.background = p.fundo;
+  fig.querySelector('img')?.remove();
+  fig.querySelector('.visor-mini')?.remove();
+
+  const img = document.createElement('img');
+  img.src = p.fotos[fotoAtual];
+  img.alt = p.nome;
+  fig.prepend(img);
+
+  if (p.fotos.length > 1){
+    const mini = document.createElement('div');
+    mini.className = 'visor-mini';
+    mini.innerHTML = p.fotos.map((f, k) =>
+      `<button class="${k === fotoAtual ? 'on' : ''}"><img src="${f}" alt=""></button>`).join('');
+    mini.querySelectorAll('button').forEach((b, k) =>
+      b.addEventListener('click', () => { fotoAtual = k; pintarVisor(); }));
+    fig.appendChild(mini);
+  }
+}
+
+function passar(n){
+  atual = (atual + n + PRODUTOS.length) % PRODUTOS.length;
+  fotoAtual = 0;
+  pintarVisor();
+}
+
+function fechar(){ visor.classList.remove('on'); document.body.style.overflow = ''; }
+
 document.getElementById('fechar').addEventListener('click', fechar);
-modal.addEventListener('click', e => { if (e.target === modal) fechar(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') fechar(); });
+document.getElementById('vAnt').addEventListener('click', () => passar(-1));
+document.getElementById('vProx').addEventListener('click', () => passar(1));
+
+/* ---------- showcase ---------- */
+/* SEGUNDOS: quanto tempo cada foto fica na tela */
+const SEGUNDOS = 5;
+
+const show = document.getElementById('show');
+const barra = document.getElementById('sTempo');
+const SLIDES = [];
+PRODUTOS.forEach(p => p.fotos.forEach(f =>
+  SLIDES.push({ foto: f, nome: p.nome, resumo: p.resumo, fundo: p.fundo })));
+
+document.getElementById('sSlides').innerHTML = SLIDES.map((s, i) => `
+  <div class="slide ${i === 0 ? 'on' : ''}" style="background:${s.fundo}">
+    <img src="${s.foto}" alt="${s.nome}" loading="${i < 2 ? 'eager' : 'lazy'}">
+  </div>`).join('');
+
+const slides = [...document.querySelectorAll('#sSlides .slide')];
+let sAtual = 0, relogio = null, pausado = false;
+
+function mostrarSlide(i){
+  sAtual = (i + SLIDES.length) % SLIDES.length;
+  slides.forEach((s, k) => s.classList.toggle('on', k === sAtual));
+  const s = SLIDES[sAtual];
+  document.getElementById('sNome').textContent = s.nome;
+  document.getElementById('sDesc').textContent = s.resumo;
+  document.getElementById('sConta').textContent = `${sAtual + 1} de ${SLIDES.length}`;
+  reiniciarBarra();
+}
+
+function reiniciarBarra(){
+  barra.classList.remove('correndo');
+  void barra.offsetWidth;                      // reinicia a animação
+  if (!pausado) barra.classList.add('correndo');
+}
+
+function andar(){
+  clearInterval(relogio);
+  relogio = setInterval(() => mostrarSlide(sAtual + 1), SEGUNDOS * 1000);
+}
+
+function tocarShow(){
+  show.classList.add('on');
+  document.body.style.overflow = 'hidden';
+  pausado = false;
+  mostrarSlide(0);
+  andar();
+  if (show.requestFullscreen) show.requestFullscreen().catch(() => {});
+}
+
+function sairShow(){
+  clearInterval(relogio);
+  show.classList.remove('on');
+  document.body.style.overflow = '';
+  barra.classList.remove('correndo');
+  if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+}
+
+function pausar(){
+  pausado = !pausado;
+  const bt = document.getElementById('sPausa');
+  if (pausado){
+    clearInterval(relogio);
+    barra.style.animationPlayState = 'paused';
+    bt.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>';
+  } else {
+    barra.style.animationPlayState = 'running';
+    andar();
+    bt.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>';
+  }
+}
+
+document.getElementById('btShow').addEventListener('click', tocarShow);
+document.getElementById('sFechar').addEventListener('click', sairShow);
+document.getElementById('sPausa').addEventListener('click', pausar);
+document.getElementById('sAnt').addEventListener('click', () => { mostrarSlide(sAtual - 1); if (!pausado) andar(); });
+document.getElementById('sProx').addEventListener('click', () => { mostrarSlide(sAtual + 1); if (!pausado) andar(); });
+document.addEventListener('fullscreenchange', () => {
+  if (!document.fullscreenElement && show.classList.contains('on')) sairShow();
+});
+
+/* ---------- teclado ---------- */
+document.addEventListener('keydown', e => {
+  if (show.classList.contains('on')){
+    if (e.key === 'Escape') sairShow();
+    if (e.key === 'ArrowRight'){ mostrarSlide(sAtual + 1); if (!pausado) andar(); }
+    if (e.key === 'ArrowLeft'){ mostrarSlide(sAtual - 1); if (!pausado) andar(); }
+    if (e.key === ' '){ e.preventDefault(); pausar(); }
+    return;
+  }
+  if (visor.classList.contains('on')){
+    if (e.key === 'Escape') fechar();
+    if (e.key === 'ArrowRight') passar(1);
+    if (e.key === 'ArrowLeft') passar(-1);
+  }
+});
 
 /* ---------- filtros visuais ---------- */
 document.querySelectorAll('[data-toggle]').forEach(el =>
